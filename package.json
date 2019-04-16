@@ -1,0 +1,23 @@
+{
+  "name": "ws-wrapper",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build:prod": "./node_modules/.bin/webpack-cli --mode='production'",
+    "build": "./node_modules/.bin/webpack-cli --mode='development'",
+    "start": "./node_modules/.bin/webpack-cli --mode='development' --watch",
+    "test": "jest",
+    "test:watch": "jest --watchAll"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.11",
+    "@types/node": "^11.13.4",
+    "jest": "^24.7.1",
+    "ts-jest": "^24.0.2",
+    "ts-loader": "^5.3.3",
+    "typescript": "^3.4.2",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
+  }
+}
