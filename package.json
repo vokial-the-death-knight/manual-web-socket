@@ -1,14 +1,29 @@
 {
-  "name": "ws-wrapper",
+  "name": "manual-web-socket",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/manual-web-socket.js",
+  "unpkg": "dist/manual-web-socket.js",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/baal-cadar/manual-web-socket.git"
+  },
+  "keywords": [
+    "websocket",
+    "e2e"
+  ],
+  "author": "Baal Cadar <baal-cadar@swamp.camp>",
+  "homepage": "https://github.com/baal-cadar/manual-web-socket#readme",
+  "files": [
+    "dist/manual-web-socket.js"
+  ],
   "scripts": {
     "build:prod": "./node_modules/.bin/webpack-cli --mode='production'",
     "build": "./node_modules/.bin/webpack-cli --mode='development'",
     "start": "./node_modules/.bin/webpack-cli --mode='development' --watch",
     "test": "jest",
-    "test:watch": "jest --watchAll"
+    "test:watch": "jest --watchAll",
+    "prepublish": "yarn run test && yarn run build:prod"
   },
   "devDependencies": {
     "@types/jest": "^24.0.11",
