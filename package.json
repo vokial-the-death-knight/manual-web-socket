@@ -1,6 +1,6 @@
 {
   "name": "manual-web-socket",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/manual-web-socket.js",
   "unpkg": "dist/manual-web-socket.js",
   "license": "MIT",
