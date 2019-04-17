@@ -21,9 +21,16 @@ export class ManualWebSocket {
   private events: WebSocketEvent[] = [];
   private serverCallbacks: ServerCallback[] = [];
 
+  static NativeWebSocketImplementation: any;
+  static AffectedAddresses: string[] = [];
+
   constructor(private url: string) {
-    ManualReadyState.set(this, { readyState: ReadyState.CONNECTING });
-    MessageBus.emit(SIMPLIFIED_WEBSOCKET_CREATED, this);
+    if (ManualWebSocket.AffectedAddresses.includes(url)) {
+      ManualReadyState.set(this, { readyState: ReadyState.CONNECTING });
+      MessageBus.emit(SIMPLIFIED_WEBSOCKET_CREATED, this);
+    } else {
+      return new ManualWebSocket.NativeWebSocketImplementation(url);
+    }
   }
 
   get readyState(): ReadyState {
@@ -103,9 +110,7 @@ export class ManualWebSocket {
     console.info(`default @onerror`);
   }
 
-  public close() {
-    console.info(`default @close`);
-  }
+  public close() {}
 
   public send(message: string) {
     this.findAndRunServerCallback(message);

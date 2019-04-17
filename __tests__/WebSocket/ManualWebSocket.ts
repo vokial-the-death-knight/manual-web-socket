@@ -7,6 +7,8 @@ import { SIMPLIFIED_WEBSOCKET_CREATED } from "../../src/tokens";
 jest.mock("../../src/WebSocket/ReadyState");
 import { ReadyState } from "../../src/WebSocket/ReadyState";
 
+ManualWebSocket.AffectedAddresses = ["url"];
+
 describe("ManualWebSocket module", () => {
   test("Should call MessageBus.emit method when created", () => {
     MessageBus.emit.mockImplementation(() => {});
@@ -26,7 +28,7 @@ describe("ManualWebSocket module", () => {
   });
 
   test("Should be created with provided connection url", () => {
-    const url = "ws://b";
+    const url = "url";
     const mws = new ManualWebSocket(url);
     const actualUrl = mws.getUrl();
 

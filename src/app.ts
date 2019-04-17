@@ -11,6 +11,7 @@ MessageBus.on(SIMPLIFIED_WEBSOCKET_CREATED, (websocket: ManualWebSocket) => {
 /**
  * Manual WebSocket
  */
+ManualWebSocket.NativeWebSocketImplementation = (window as any).WebSocket;
 
 /**
  * Replace native WebSocket with ManualWebSocket
@@ -23,5 +24,7 @@ MessageBus.on(SIMPLIFIED_WEBSOCKET_CREATED, (websocket: ManualWebSocket) => {
 (window as any).MWS = (window as any).ManualWebSocket = {
   GlobalWebSocketsContainer: GlobalWebSocketsContainer,
   ReadyState: ReadyState,
-  when: (url: string) => GlobalWebSocketsContainer.when(url)
+  when: (url: string) => GlobalWebSocketsContainer.when(url),
+  useFor: (addresses: string[]) =>
+    (ManualWebSocket.AffectedAddresses = addresses)
 };
