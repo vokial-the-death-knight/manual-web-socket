@@ -22,5 +22,6 @@ MessageBus.on(SIMPLIFIED_WEBSOCKET_CREATED, (websocket: ManualWebSocket) => {
  */
 (window as any).MWS = (window as any).ManualWebSocket = {
   GlobalWebSocketsContainer: GlobalWebSocketsContainer,
-  ReadyState: ReadyState
+  ReadyState: ReadyState,
+  when: (url: string) => GlobalWebSocketsContainer.when(url)
 };

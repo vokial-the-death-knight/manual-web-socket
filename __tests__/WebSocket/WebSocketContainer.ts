@@ -30,4 +30,31 @@ describe("WebSocketsContainer module", () => {
       expect(wsc.getByUrl(url)).toBe(c);
     });
   });
+  describe("Promises", () => {
+    it("Should resolve when connection is registered", () => {
+      const url = "wss://127.0.0.1";
+
+      const {
+        ManualWebSocket
+      } = require("../../src/WebSocket/ManualWebSocket");
+      jest.mock("../../src/WebSocket/ManualWebSocket");
+
+      ManualWebSocket.mockImplementation(() => {
+        return {
+          getUrl: () => {
+            return url;
+          }
+        };
+      });
+
+      const connection = new ManualWebSocket(url);
+
+      const wsc = new WebSocketsContainer();
+      wsc.when(url).then(conn => {
+        expect(conn).toBe(connection);
+      });
+
+      wsc.add(connection);
+    });
+  });
 });
