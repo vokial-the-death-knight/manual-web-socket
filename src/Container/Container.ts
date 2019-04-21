@@ -1,4 +1,4 @@
-import { ManualWebSocket } from "./ManualWebSocket";
+import { ManualWebSocket } from "../ManualWebSocket/ManualWebSocket";
 
 interface AwaitingPromise {
   url: string;

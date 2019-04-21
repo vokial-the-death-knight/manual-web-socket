@@ -1,14 +1,14 @@
-import { WebSocketEvent } from "../../src/WebSocket/WebSocketEvent";
+import { Event } from "../../src/WebSocket/Events";
 
 describe("WebSocketEvent module", () => {
   test("Can be created with WebSocketEventType and callback function", () => {
-    const wse = new WebSocketEvent("open", () => {});
-    expect(wse).toBeInstanceOf(WebSocketEvent);
+    const wse = new Event("open", () => {});
+    expect(wse).toBeInstanceOf(Event);
   });
 
   test("Returns valid type when getType is called", () => {
     const expectedType = "open";
-    const wse = new WebSocketEvent(expectedType, () => {});
+    const wse = new Event(expectedType, () => {});
 
     const actualType = wse.getType();
     expect(actualType).toBe(expectedType);
@@ -16,7 +16,7 @@ describe("WebSocketEvent module", () => {
 
   test("Executes callback without parameter when not provided", () => {
     const callbackMock = jest.fn();
-    const wse = new WebSocketEvent("open", callbackMock);
+    const wse = new Event("open", callbackMock);
 
     wse.execute();
 
@@ -27,7 +27,7 @@ describe("WebSocketEvent module", () => {
   test("Executes callback with message when provided", () => {
     const message = "some message";
     const callbackMock = jest.fn();
-    const wse = new WebSocketEvent("open", callbackMock);
+    const wse = new Event("open", callbackMock);
 
     wse.execute(message);
 

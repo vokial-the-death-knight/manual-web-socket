@@ -1,25 +1,19 @@
-jest.mock("../../src/Communication/MessageBus");
-const { MessageBus } = require("../../src/Communication/MessageBus");
+import { ManualWebSocket } from "../../src/ManualWebSocket/ManualWebSocket";
 
-import { ManualWebSocket } from "../../src/WebSocket/ManualWebSocket";
-import { SIMPLIFIED_WEBSOCKET_CREATED } from "../../src/tokens";
+jest.mock("../../src/ManualWebSocket/TrackedAddresses");
+const {
+  GlobalTrackedAddresses
+} = require("../../src/ManualWebSocket/TrackedAddresses");
+GlobalTrackedAddresses.isTracked.mockImplementation(() => true);
 
 jest.mock("../../src/WebSocket/ReadyState");
 import { ReadyState } from "../../src/WebSocket/ReadyState";
 
-ManualWebSocket.AffectedAddresses = ["url"];
-
 describe("ManualWebSocket module", () => {
-  test("Should call MessageBus.emit method when created", () => {
-    MessageBus.emit.mockImplementation(() => {});
-    const mws = new ManualWebSocket("url");
-
-    expect(MessageBus.emit.mock.calls.length).toBe(1);
-    expect(MessageBus.emit.mock.calls[0][0]).toBe(SIMPLIFIED_WEBSOCKET_CREATED);
-    expect(MessageBus.emit.mock.calls[0][1]).toBe(mws);
-  });
-
   test("Should be created with 'CONNECTING' readyState", () => {
+    const { IsReadyState } = require("../../src/WebSocket/ReadyState");
+    IsReadyState.mockImplementation(() => true);
+
     const mws = new ManualWebSocket("url");
     const expectedReadyState = ReadyState.CONNECTING;
     const actualReadyState = mws.readyState;
@@ -49,11 +43,13 @@ describe("ManualWebSocket module", () => {
       expect(actualReadyState).toBe(expectedReadyState);
     });
 
-    test("Shoud throw an error when given state is invalid", () => {
+    test("Should throw an error when given state is invalid", () => {
       const { IsReadyState } = require("../../src/WebSocket/ReadyState");
-      IsReadyState.mockImplementation(() => false);
+      IsReadyState.mockImplementation(() => true);
 
       const mws = new ManualWebSocket("url");
+
+      IsReadyState.mockImplementation(() => false);
 
       const invalidState = 999;
       expect(() => (mws.readyState = invalidState)).toThrow(

@@ -1,17 +1,13 @@
-import { MessageBus } from "./Communication/MessageBus";
-import { SIMPLIFIED_WEBSOCKET_CREATED } from "./tokens";
-import { ManualWebSocket } from "./WebSocket/ManualWebSocket";
-import { GlobalWebSocketsContainer } from "./WebSocket/WebSocketsContainer";
+import { ManualWebSocket } from "./ManualWebSocket/ManualWebSocket";
+import { GlobalWebSocketsContainer } from "./Container/Container";
 import { ReadyState } from "./WebSocket/ReadyState";
-
-MessageBus.on(SIMPLIFIED_WEBSOCKET_CREATED, (websocket: ManualWebSocket) => {
-  GlobalWebSocketsContainer.add(websocket);
-});
+import { WebSocket } from "./WebSocket/WebSocket";
+import { GlobalTrackedAddresses } from "./ManualWebSocket/TrackedAddresses";
 
 /**
  * Manual WebSocket
  */
-ManualWebSocket.NativeWebSocketImplementation = (window as any).WebSocket;
+WebSocket.NativeImplementation = (window as any).WebSocket;
 
 /**
  * Replace native WebSocket with ManualWebSocket
@@ -25,6 +21,6 @@ ManualWebSocket.NativeWebSocketImplementation = (window as any).WebSocket;
   GlobalWebSocketsContainer: GlobalWebSocketsContainer,
   ReadyState: ReadyState,
   when: (url: string) => GlobalWebSocketsContainer.when(url),
-  useFor: (addresses: string[]) =>
-    (ManualWebSocket.AffectedAddresses = addresses)
+  useFor: (addresses: Array<string | RegExp>) =>
+    addresses.forEach(address => GlobalTrackedAddresses.add(address))
 };

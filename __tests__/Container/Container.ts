@@ -1,4 +1,4 @@
-import { WebSocketsContainer } from "../../src/WebSocket/WebSocketsContainer";
+import { WebSocketsContainer } from "../../src/Container/Container";
 
 describe("WebSocketsContainer module", () => {
   describe("getConnectionByUrl", () => {
@@ -11,8 +11,8 @@ describe("WebSocketsContainer module", () => {
       const url = "ws://d";
       const {
         ManualWebSocket
-      } = require("../../src/WebSocket/ManualWebSocket");
-      jest.mock("../../src/WebSocket/ManualWebSocket");
+      } = require("../../src/ManualWebSocket/ManualWebSocket");
+      jest.mock("../../src/ManualWebSocket/ManualWebSocket");
 
       ManualWebSocket.mockImplementation(() => {
         return {
@@ -36,8 +36,8 @@ describe("WebSocketsContainer module", () => {
 
       const {
         ManualWebSocket
-      } = require("../../src/WebSocket/ManualWebSocket");
-      jest.mock("../../src/WebSocket/ManualWebSocket");
+      } = require("../../src/ManualWebSocket/ManualWebSocket");
+      jest.mock("../../src/ManualWebSocket/ManualWebSocket");
 
       ManualWebSocket.mockImplementation(() => {
         return {
