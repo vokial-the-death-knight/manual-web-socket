@@ -45,4 +45,4 @@ export class WebSocketsContainer {
   }
 }
 
-export const GlobalWebSocketsContainer = new WebSocketsContainer();
+export const TrackedConnectionsContainer = new WebSocketsContainer();

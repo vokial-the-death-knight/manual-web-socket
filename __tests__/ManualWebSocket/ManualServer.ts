@@ -1,19 +1,13 @@
-import {
-  ManualServer,
-  ManualServerCallback
-} from "../../src/ManualWebSocket/ManualServer";
+import { ManualServer } from "../../src/ManualWebSocket/ManualServer";
 
 describe("ManualServer module", () => {
   test("Should call callback when message matches", () => {
     const server = new ManualServer();
     const callback = jest.fn();
 
-    const serverCallback: ManualServerCallback = {
-      message: "abc",
-      callback: callback
-    };
+    const message = "abc";
 
-    server.addCallback(serverCallback);
+    server.addCallback({ message, callback });
 
     server.findAndRunServerCallback("abc");
 
@@ -24,12 +18,9 @@ describe("ManualServer module", () => {
     const server = new ManualServer();
     const callback = jest.fn();
 
-    const serverCallback: ManualServerCallback = {
-      message: "abc",
-      callback: callback
-    };
+    const message = "abc";
 
-    server.addCallback(serverCallback);
+    server.addCallback({ message, callback });
 
     server.findAndRunServerCallback("abcd");
 

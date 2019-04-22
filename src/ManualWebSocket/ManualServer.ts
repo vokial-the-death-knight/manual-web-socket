@@ -1,4 +1,4 @@
-export interface ManualServerCallback {
+interface ManualServerCallback {
   message: string;
   callback: Function;
 }

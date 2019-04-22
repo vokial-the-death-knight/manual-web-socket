@@ -3,8 +3,10 @@ import { GlobalTrackedAddresses } from "./TrackedAddresses";
 import { PrivateReadyState } from "./PrivateReadyState";
 import { WebSocket } from "../WebSocket/WebSocket";
 import { Event, EventType } from "../WebSocket/Events";
-import { ManualServer, ManualServerCallback } from "./ManualServer";
-import { GlobalWebSocketsContainer } from "../Container/Container";
+import { ManualServer } from "./ManualServer";
+import { TrackedConnectionsContainer } from "../Container/Container";
+import { MessageBus } from "../Communication/MessageBus";
+import { MANUAL_WEBSOCKET_CREATED } from "../Communication/Tokens";
 
 export class ManualWebSocket {
   private events: Event[] = [];
@@ -14,7 +16,8 @@ export class ManualWebSocket {
     if (GlobalTrackedAddresses.isTracked(url)) {
       this.readyState = ReadyState.CONNECTING;
 
-      GlobalWebSocketsContainer.add(this);
+      TrackedConnectionsContainer.add(this);
+      MessageBus.emit(MANUAL_WEBSOCKET_CREATED, this);
     } else {
       return WebSocket.CreateUsingNativeImplementation(url);
     }
@@ -67,13 +70,17 @@ export class ManualWebSocket {
     }
   }
 
-  public publishMessage(message: string) {
+  public isOpened() {
     if (PrivateReadyState.get(this).readyState !== ReadyState.OPEN) {
       throw new Error(
         `Message can be sent only when ready state is *OPEN*, 
         current state is *${PrivateReadyState.get(this).readyState}*`
       );
     }
+  }
+
+  public reciveMessage(message: string) {
+    this.isOpened();
 
     this.onmessage(message);
     this.events
@@ -100,10 +107,14 @@ export class ManualWebSocket {
   public close() {}
 
   public send(message: string) {
+    this.isOpened();
     this.server.findAndRunServerCallback(message);
   }
 
-  public prepareServerCallback(callbacks: ManualServerCallback[]) {
-    callbacks.forEach(callback => this.server.addCallback(callback));
+  public addServerScenario(clientMessage: string, callback: Function): void {
+    this.server.addCallback({
+      message: clientMessage,
+      callback
+    });
   }
 }

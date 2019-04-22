@@ -71,12 +71,12 @@ describe("ManualWebSocket module", () => {
       mws.addEventListener("message", callback);
 
       mws.readyState = ReadyState.OPEN;
-      mws.publishMessage("some message");
+      mws.reciveMessage("some message");
 
       expect(callback.mock.calls.length).toBe(1);
 
       mws.removeEventListener("message", callback);
-      mws.publishMessage("some message");
+      mws.reciveMessage("some message");
 
       expect(callback.mock.calls.length).toBe(1);
     });
@@ -89,12 +89,12 @@ describe("ManualWebSocket module", () => {
       const callback2 = jest.fn();
       const callback3 = jest.fn();
 
+      mws.isOpened = jest.fn(() => true);
+
       const message = "some message";
-      mws.prepareServerCallback([
-        { message: message, callback: callback1 },
-        { message: message, callback: callback2 },
-        { message: message, callback: callback3 }
-      ]);
+      mws.addServerScenario(message, callback1);
+      mws.addServerScenario(message, callback2);
+      mws.addServerScenario(message, callback3);
 
       mws.send(message);
       expect(callback1.mock.calls.length).toBe(1);
@@ -120,10 +120,10 @@ describe("ManualWebSocket module", () => {
       const message1 = "some message";
       const message2 = "other message";
 
-      mws.prepareServerCallback([
-        { message: message1, callback: callback1 },
-        { message: message2, callback: callback2 }
-      ]);
+      mws.isOpened = jest.fn(() => true);
+
+      mws.addServerScenario(message1, callback1);
+      mws.addServerScenario(message2, callback2);
 
       mws.send(message2);
       expect(callback1.mock.calls.length).toBe(0);

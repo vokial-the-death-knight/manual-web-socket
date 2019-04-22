@@ -8,11 +8,25 @@ export class TrackedAddresses {
       : this.stringList.push(url as string);
   }
 
-  isTracked(url: string): boolean {
-    return this.searchStrings(url) ? true : this.searchRegExp(url);
+  remove(url: string | RegExp): void {
+    if (url.constructor == RegExp) {
+      const index = this.regExpList.indexOf(url as RegExp);
+      if (index > -1) {
+        this.regExpList.splice(index, 1);
+      }
+    } else {
+      const index = this.stringList.indexOf(url as string);
+      if (index > -1) {
+        this.stringList.splice(index, 1);
+      }
+    }
   }
 
-  private searchRegExp(url: string): boolean {
+  isTracked(url: string): boolean {
+    return this.searchStrings(url) ? true : this.searchRegExps(url);
+  }
+
+  private searchRegExps(url: string): boolean {
     return this.regExpList.filter(regexp => {
       const r = new RegExp(regexp);
       return r.exec(url);
