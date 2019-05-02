@@ -8,7 +8,7 @@ import { TrackedConnectionsContainer } from "../Container/Container";
 import { MessageBus } from "../Communication/MessageBus";
 import { MANUAL_WEBSOCKET_CREATED } from "../Communication/Tokens";
 
-export class ManualWebSocket {
+export class ManualWebSocketConnection {
   private events: Event[] = [];
   private server: ManualServer = new ManualServer();
 
@@ -114,7 +114,8 @@ export class ManualWebSocket {
   public addServerScenario(clientMessage: string, callback: Function): void {
     this.server.addCallback({
       message: clientMessage,
-      callback
+      callback,
+      connection: this
     });
   }
 }

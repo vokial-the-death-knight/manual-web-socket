@@ -1,4 +1,4 @@
-import { ManualWebSocket } from "../../src/ManualWebSocket/ManualWebSocket";
+import { ManualWebSocketConnection } from "../../src/ManualWebSocket/ManualWebSocketConnection";
 
 jest.mock("../../src/ManualWebSocket/TrackedAddresses");
 const {
@@ -14,7 +14,7 @@ describe("ManualWebSocket module", () => {
     const { IsReadyState } = require("../../src/WebSocket/ReadyState");
     IsReadyState.mockImplementation(() => true);
 
-    const mws = new ManualWebSocket("url");
+    const mws = new ManualWebSocketConnection("url");
     const expectedReadyState = ReadyState.CONNECTING;
     const actualReadyState = mws.readyState;
 
@@ -23,7 +23,7 @@ describe("ManualWebSocket module", () => {
 
   test("Should be created with provided connection url", () => {
     const url = "url";
-    const mws = new ManualWebSocket(url);
+    const mws = new ManualWebSocketConnection(url);
     const actualUrl = mws.getUrl();
 
     expect(actualUrl).toBe(url);
@@ -35,7 +35,7 @@ describe("ManualWebSocket module", () => {
       const { IsReadyState } = require("../../src/WebSocket/ReadyState");
       IsReadyState.mockImplementation(() => true);
 
-      const mws = new ManualWebSocket("url");
+      const mws = new ManualWebSocketConnection("url");
       mws.onopen = jest.fn();
       mws.readyState = ReadyState.OPEN;
 
@@ -47,7 +47,7 @@ describe("ManualWebSocket module", () => {
       const { IsReadyState } = require("../../src/WebSocket/ReadyState");
       IsReadyState.mockImplementation(() => true);
 
-      const mws = new ManualWebSocket("url");
+      const mws = new ManualWebSocketConnection("url");
 
       IsReadyState.mockImplementation(() => false);
 
@@ -63,7 +63,7 @@ describe("ManualWebSocket module", () => {
       const { IsReadyState } = require("../../src/WebSocket/ReadyState");
       IsReadyState.mockImplementation(() => true);
 
-      const mws = new ManualWebSocket("url");
+      const mws = new ManualWebSocketConnection("url");
       mws.onopen = jest.fn();
       mws.onmessage = jest.fn();
 
@@ -84,7 +84,7 @@ describe("ManualWebSocket module", () => {
 
   describe("Server communication", () => {
     test("Can stack server responses and execute them in order", () => {
-      const mws = new ManualWebSocket("url");
+      const mws = new ManualWebSocketConnection("url");
       const callback1 = jest.fn();
       const callback2 = jest.fn();
       const callback3 = jest.fn();
@@ -113,7 +113,7 @@ describe("ManualWebSocket module", () => {
     });
 
     test("Should execute matching callback one time", () => {
-      const mws = new ManualWebSocket("url");
+      const mws = new ManualWebSocketConnection("url");
       const callback1 = jest.fn();
       const callback2 = jest.fn();
 

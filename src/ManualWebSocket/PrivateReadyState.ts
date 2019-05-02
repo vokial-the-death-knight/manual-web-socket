@@ -1,4 +1,4 @@
-import { ManualWebSocket } from "./ManualWebSocket";
+import { ManualWebSocketConnection } from "./ManualWebSocketConnection";
 import { ReadyState } from "../WebSocket/ReadyState";
 
 export interface PrivateReadyState {
@@ -6,6 +6,6 @@ export interface PrivateReadyState {
 }
 
 export const PrivateReadyState = new WeakMap<
-  ManualWebSocket,
+  ManualWebSocketConnection,
   PrivateReadyState
 >();

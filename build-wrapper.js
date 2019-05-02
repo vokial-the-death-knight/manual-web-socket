@@ -15,9 +15,18 @@ if (!fs.existsSync(path.resolve(__dirname, "dist"))) {
 }
 
 const template =
-  "module.exports = { getScript: function(){ return `" + script + "`} }";
+  "module.exports = { getScript: function(){ " +
+  "return `" +
+  script +
+  "`;}," +
+  "}";
 
 fs.writeFileSync(
   path.resolve(__dirname, "dist", "manual-web-socket.js"),
   template
+);
+
+fs.writeFileSync(
+  path.resolve(__dirname, "dist", "manual-web-socket.raw.js"),
+  script
 );

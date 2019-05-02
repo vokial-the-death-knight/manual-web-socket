@@ -1,4 +1,4 @@
-import { ManualWebSocket } from "./ManualWebSocket/ManualWebSocket";
+import { ManualWebSocketConnection } from "./ManualWebSocket/ManualWebSocketConnection";
 import { TrackedConnectionsContainer } from "./Container/Container";
 import { ReadyState } from "./WebSocket/ReadyState";
 import { WebSocket } from "./WebSocket/WebSocket";
@@ -13,13 +13,17 @@ WebSocket.NativeImplementation = (window as any).WebSocket;
 /**
  * Replace native WebSocket with ManualWebSocket
  */
-(window as any).WebSocket = ManualWebSocket;
+(window as any).WebSocket = ManualWebSocketConnection;
 
 /**
  * Expose public interface
  */
 (window as any).MWS = (window as any).mws = (window as any).ManualWebSocket = {
-  trackedConnections: TrackedConnectionsContainer,
+  trackedConnections: {
+    when: (url: string) => TrackedConnectionsContainer.when(url),
+    getByUrl: (url: string) => TrackedConnectionsContainer.getByUrl(url),
+    getAll: () => TrackedConnectionsContainer.getAll()
+  },
   readyState: ReadyState,
   when: (url: string) => TrackedConnectionsContainer.when(url),
   track: (addresses: Array<string | RegExp>) =>

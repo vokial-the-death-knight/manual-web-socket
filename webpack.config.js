@@ -2,6 +2,7 @@ const path = require("path");
 
 module.exports = {
   entry: "./src/app.ts",
+  //devtool: "inline-source-map",
   output: {
     path: path.resolve(__dirname, "tmp"),
     filename: "manual-web-socket.js"

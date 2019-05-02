@@ -1,4 +1,8 @@
 import { WebSocketsContainer } from "../../src/Container/Container";
+const {
+  ManualWebSocketConnection
+} = require("../../src/ManualWebSocket/ManualWebSocketConnection");
+jest.mock("../../src/ManualWebSocket/ManualWebSocketConnection");
 
 describe("WebSocketsContainer module", () => {
   describe("getConnectionByUrl", () => {
@@ -9,12 +13,8 @@ describe("WebSocketsContainer module", () => {
 
     test("Should return connection when found", () => {
       const url = "ws://d";
-      const {
-        ManualWebSocket
-      } = require("../../src/ManualWebSocket/ManualWebSocket");
-      jest.mock("../../src/ManualWebSocket/ManualWebSocket");
 
-      ManualWebSocket.mockImplementation(() => {
+      ManualWebSocketConnection.mockImplementation(() => {
         return {
           getUrl: () => {
             return url;
@@ -24,7 +24,7 @@ describe("WebSocketsContainer module", () => {
 
       const wsc = new WebSocketsContainer();
 
-      const c = new ManualWebSocket(url);
+      const c = new ManualWebSocketConnection(url);
       wsc.add(c);
 
       expect(wsc.getByUrl(url)).toBe(c);
@@ -34,12 +34,7 @@ describe("WebSocketsContainer module", () => {
     it("Should resolve when connection is registered", () => {
       const url = "wss://127.0.0.1";
 
-      const {
-        ManualWebSocket
-      } = require("../../src/ManualWebSocket/ManualWebSocket");
-      jest.mock("../../src/ManualWebSocket/ManualWebSocket");
-
-      ManualWebSocket.mockImplementation(() => {
+      ManualWebSocketConnection.mockImplementation(() => {
         return {
           getUrl: () => {
             return url;
@@ -47,7 +42,7 @@ describe("WebSocketsContainer module", () => {
         };
       });
 
-      const connection = new ManualWebSocket(url);
+      const connection = new ManualWebSocketConnection(url);
 
       const wsc = new WebSocketsContainer();
       wsc.when(url).then(conn => {

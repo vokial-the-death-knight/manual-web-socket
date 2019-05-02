@@ -1,4 +1,4 @@
-import { ManualWebSocket } from "../ManualWebSocket/ManualWebSocket";
+import { ManualWebSocketConnection } from "../ManualWebSocket/ManualWebSocketConnection";
 
 interface AwaitingPromise {
   url: string;
@@ -6,19 +6,23 @@ interface AwaitingPromise {
 }
 
 export class WebSocketsContainer {
-  private websockets: ManualWebSocket[] = [];
+  private websockets: ManualWebSocketConnection[] = [];
   private awaitingPromises: AwaitingPromise[] = [];
 
-  public getByUrl(url: string): ManualWebSocket | undefined {
+  public getByUrl(url: string): ManualWebSocketConnection | undefined {
     return this.websockets.find(ws => ws.getUrl() === url);
   }
 
-  public add(websocket: ManualWebSocket): void {
+  public getAll(): ManualWebSocketConnection[] {
+    return this.websockets;
+  }
+
+  public add(websocket: ManualWebSocketConnection): void {
     this.websockets.push(websocket);
     this.resolve(websocket);
   }
 
-  private resolve(websocket: ManualWebSocket) {
+  private resolve(websocket: ManualWebSocketConnection) {
     this.awaitingPromises
       .filter(promise => promise.url === websocket.getUrl())
       .forEach(promise => promise.resolveFn(websocket));
@@ -32,8 +36,8 @@ export class WebSocketsContainer {
     this.awaitingPromises.push({ url, resolveFn });
   }
 
-  public when(url: string): Promise<ManualWebSocket> {
-    return new Promise<ManualWebSocket>((resolve, reject) => {
+  public when(url: string): Promise<ManualWebSocketConnection> {
+    return new Promise<ManualWebSocketConnection>((resolve, reject) => {
       const connection = this.getByUrl(url);
 
       if (connection) {
