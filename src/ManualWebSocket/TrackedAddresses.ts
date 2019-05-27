@@ -3,13 +3,13 @@ export class TrackedAddresses {
   private regExpList: RegExp[] = [];
 
   add(url: string | RegExp): void {
-    url.constructor == RegExp
+    url.constructor.name == "RegExp"
       ? this.regExpList.push(url as RegExp)
       : this.stringList.push(url as string);
   }
 
   remove(url: string | RegExp): void {
-    if (url.constructor == RegExp) {
+    if (url.constructor.name == "RegExp") {
       const index = this.regExpList.indexOf(url as RegExp);
       if (index > -1) {
         this.regExpList.splice(index, 1);
