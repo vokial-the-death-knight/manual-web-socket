@@ -1,5 +1,5 @@
 # Project status
-Greeting,
+Greetings,
 
 Unfortunately I never had time to finish this project (add tests, modify codebase, add source maps and so on).
 As you can see it's abandoned for some time.
